@@ -12,7 +12,7 @@ This module provides tools for:
 - Generating 3D visualizations
 - Creating unique cognitive signature fingerprints
 
-Author: Daniel Galvan (@gamogestionweb)
+Author: Daniel Gamo (@gamogestionweb)
 License: MIT
 """
 
