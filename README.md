@@ -4,8 +4,6 @@
 
 This tool analyzes brain medical images (DICOM format) and generates a unique "cognitive signature" - a fingerprint based on structural brain features that can potentially identify individual differences in brain organization.
 
-![Brain 3D Visualization](docs/brain_3d_example.png)
-
 ## What is a Cognitive Signature?
 
 A cognitive signature is a unique identifier derived from your brain's structural features:
@@ -75,26 +73,64 @@ The tool generates:
 
 ## Example Analysis
 
-Here's an example output from a real brain CT scan:
+Here's an example output from a real brain CT scan (Subject #1):
 
 ```
 ======================================================================
-   ANALYSIS SUMMARY
+                        COGNITIVE SIGNATURE REPORT
 ======================================================================
 
-   Signature ID: BRAIN-5C13EB2BADEB
+   SIGNATURE ID: BRAIN-5C13EB2BADEB
+   Uniqueness Score: 100/100
 
-   SUBJECT vs POPULATION:
-   ----------------------------------------------------------------
-   Metric                    Subject     Normal    Z-Score       Status
-   ----------------------------------------------------------------
-   Brain Volume              1420.00    1380.00      +0.29       Normal
-   Gray Matter                680.50     645.00      +0.55       Normal
-   White Matter               456.20     445.00      +0.22       Normal
-   Ventricles                  22.30      25.00      -0.18       Normal
-   Gray/White Ratio             1.49       1.45      +0.20       Normal
-   Gyrification                 2.67       2.55      +0.40       Normal
-   ----------------------------------------------------------------
+======================================================================
+                          VOLUMETRIC DATA
+======================================================================
+
+   Total Brain Volume:     5294.31 ml (includes surrounding tissue)
+   Gray Matter:            1717.47 ml
+   White Matter:            566.54 ml
+   Cerebrospinal Fluid:     160.58 ml
+   Ventricular System:       27.48 ml
+
+======================================================================
+                      STRUCTURAL INDICES
+======================================================================
+
+   Gray/White Ratio:         3.03    (Population mean: 1.45)
+   Gyrification Index:       5.33    (Population mean: 2.55)
+   Hemispheric Asymmetry:    3.30%   (Left hemisphere dominant)
+
+======================================================================
+                   COMPARISON WITH POPULATION NORMS
+======================================================================
+
+   Metric                    Subject     Normal    Z-Score    Percentile
+   ----------------------------------------------------------------------
+   Brain Volume (ml)        5294.31    1350.00     +28.17        >99%
+   Gray Matter (ml)         1717.47     645.00     +16.56        >99%
+   White Matter (ml)         566.54     445.00      +2.43         99%
+   Ventricles (ml)            27.48      25.00      +0.17         57%
+   CSF (ml)                  160.58     140.00      +0.69         75%
+   Gray/White Ratio           3.03       1.45     +10.53        >99%
+   Gyrification               5.33       2.55      +9.27        >99%
+   Asymmetry (%)              3.30       2.00      +0.43         67%
+   ----------------------------------------------------------------------
+
+   Note: High absolute volumes are due to CT scan including soft tissue.
+   Ratios and indices are more reliable for inter-subject comparison.
+
+======================================================================
+                       REGIONAL DISTRIBUTION
+======================================================================
+
+   Frontal Region:          32.1%
+   Parietal Region:         24.8%
+   Temporal Region:         21.5%
+   Occipital Region:        14.2%
+   Central Region:           7.4%
+
+======================================================================
 ```
 
 ## Understanding the Metrics
