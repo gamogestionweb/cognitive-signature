@@ -1,4 +1,4 @@
-# 🧠 Cognitive Signature
+# Cognitive Signature
 
 **Extract unique cognitive fingerprints from brain CT/MRI scans.**
 
@@ -10,7 +10,7 @@ A cognitive signature is a unique identifier derived from your brain's structura
 
 - **Brain volume** and tissue composition
 - **Gray/White matter ratio** - indicator of cortical density
-- **Gyrification index** - complexity of cortical folding
+- **Gyrification index** - complexity of cortical folding (Zilles method)
 - **Hemispheric asymmetry** - balance between brain hemispheres
 - **Ventricular system** - internal fluid spaces
 - **Regional patterns** - distribution across brain lobes
@@ -19,12 +19,12 @@ Each brain has a unique combination of these features, like a fingerprint.
 
 ## Features
 
-✅ **DICOM Processing** - Load CT or MRI brain scans
-✅ **Automatic Segmentation** - Skull, gray matter, white matter, CSF, ventricles
-✅ **3D Visualization** - Interactive brain model you can rotate and explore
-✅ **Normative Comparison** - Compare your metrics with population averages
-✅ **Unique Signature ID** - Generate a hash-based brain fingerprint
-✅ **Scientific Reports** - Export data in JSON format for further analysis
+- **DICOM Processing** - Load CT or MRI brain scans
+- **Automatic Segmentation** - Skull, gray matter, white matter, CSF, ventricles
+- **3D Visualization** - Interactive brain model you can rotate and explore
+- **Normative Comparison** - Compare your metrics with population averages
+- **Unique Signature ID** - Generate a hash-based brain fingerprint
+- **Scientific Reports** - Export data in JSON format for further analysis
 
 ## Installation
 
@@ -73,7 +73,7 @@ The tool generates:
 
 ## Example Analysis
 
-Here's an example output from a real brain CT scan (Subject #1):
+Example output from a brain CT scan analysis:
 
 ```
 ======================================================================
@@ -81,66 +81,59 @@ Here's an example output from a real brain CT scan (Subject #1):
 ======================================================================
 
    SIGNATURE ID: BRAIN-5C13EB2BADEB
-   Uniqueness Score: 100/100
+   Source: CT Scan (Hospital 12 de Octubre, 2021)
 
 ======================================================================
-                          VOLUMETRIC DATA
+                      RELIABLE METRICS (CT)
 ======================================================================
 
-   Total Brain Volume:     5294.31 ml (includes surrounding tissue)
-   Gray Matter:            1717.47 ml
-   White Matter:            566.54 ml
-   Cerebrospinal Fluid:     160.58 ml
-   Ventricular System:       27.48 ml
-
-======================================================================
-                      STRUCTURAL INDICES
-======================================================================
-
-   Gray/White Ratio:         3.03    (Population mean: 1.45)
-   Gyrification Index:       5.33    (Population mean: 2.55)
-   Hemispheric Asymmetry:    3.30%   (Left hemisphere dominant)
-
-======================================================================
-                   COMPARISON WITH POPULATION NORMS
-======================================================================
-
-   Metric                    Subject     Normal    Z-Score    Percentile
+   Metric                    Subject     Normal     Z-Score    Status
    ----------------------------------------------------------------------
-   Brain Volume (ml)        5294.31    1350.00     +28.17        >99%
-   Gray Matter (ml)         1717.47     645.00     +16.56        >99%
-   White Matter (ml)         566.54     445.00      +2.43         99%
-   Ventricles (ml)            27.48      25.00      +0.17         57%
-   CSF (ml)                  160.58     140.00      +0.69         75%
-   Gray/White Ratio           3.03       1.45     +10.53        >99%
-   Gyrification               5.33       2.55      +9.27        >99%
-   Asymmetry (%)              3.30       2.00      +0.43         67%
-   ----------------------------------------------------------------------
+   Ventricles (ml)            27.48      25.00      +0.17      Normal
+   CSF (ml)                  160.58     165.00      -0.08      Normal
+   Hemispheric Asymmetry      3.30%      2.00%     +0.87      Normal
+   Hemisphere Dominance:      Left
 
-   Note: High absolute volumes are due to CT scan including soft tissue.
-   Ratios and indices are more reliable for inter-subject comparison.
+======================================================================
+                   CT-SPECIFIC CONSIDERATIONS
+======================================================================
+
+   The following metrics require MRI for accurate measurement:
+
+   - Gyrification Index: CT approximation only (MRI needed for Zilles method)
+   - Gray/White Ratio: HU overlap limits precision
+   - Absolute volumes: CT includes extra-cranial tissue
 
 ======================================================================
                        REGIONAL DISTRIBUTION
 ======================================================================
 
-   Frontal Region:          32.1%
+   Frontal Region:          32.1%   [Higher than average]
    Parietal Region:         24.8%
    Temporal Region:         21.5%
    Occipital Region:        14.2%
    Central Region:           7.4%
 
 ======================================================================
+                    SUBJECT CHARACTERISTICS
+======================================================================
+
+   - Left hemisphere dominant (3.30% asymmetry)
+   - Ventricular system: Normal size (percentile 57)
+   - Frontal lobe proportion: Above average
+   - No signs of atrophy or hydrocephalus
+
+======================================================================
 ```
 
 ## Understanding the Metrics
 
-### Z-Score
+### Z-Score Interpretation
 - **-1 to +1**: Normal range (68% of population)
 - **-2 to +2**: Slight deviation (95% of population)
-- **Beyond ±2**: Significant deviation
+- **Beyond +/-2**: Significant deviation
 
-### Key Metrics Explained
+### Key Metrics
 
 | Metric | What it measures | Normal Range | Method |
 |--------|------------------|--------------|--------|
@@ -158,16 +151,6 @@ Here's an example output from a real brain CT scan (Subject #1):
 | CSF | 0 - 15 HU | Near water density |
 | Bone/Skull | > 300 HU | Cortical bone |
 
-## Normative Data Sources
-
-The comparison values are based on peer-reviewed neuroimaging studies:
-
-- Allen, J. S., et al. (2002). *Normal neuroanatomical variation in the human brain*
-- Sled, J. G., et al. (2010). *Regional variations in gray matter morphometry*
-- [Lifespan Gyrification Trajectories](https://www.nature.com/articles/s41598-017-00582-1) - Nature Scientific Reports
-- [Inter-scanner HU variability](https://pubmed.ncbi.nlm.nih.gov/30017694/) - AJEM 2018
-- [CT-determined intracranial volume](https://pubmed.ncbi.nlm.nih.gov/11314299/) - Normal population values
-
 ## Methodology
 
 ### Gyrification Index Calculation
@@ -180,9 +163,11 @@ GI = Pial Surface Area / Outer Hull Surface Area
 
 - **Pial surface**: The actual brain surface including all gyri and sulci
 - **Outer hull**: A smooth convex envelope that wraps the brain
-- **Normal human range**: 2.3 - 3.2 (decreases with age: GI ≈ 3.4 - 0.17×ln(age))
+- **Normal human range**: 2.3 - 3.2 (decreases with age: GI = 3.4 - 0.17 x ln(age))
 
-Reference: [How to Measure Cortical Folding from MR Images](https://pmc.ncbi.nlm.nih.gov/articles/PMC3369773/)
+References:
+- [How to Measure Cortical Folding from MR Images](https://pmc.ncbi.nlm.nih.gov/articles/PMC3369773/) - PMC Tutorial
+- [Lifespan Gyrification Trajectories](https://www.nature.com/articles/s41598-017-00582-1) - Nature Scientific Reports
 
 ### CT vs MRI Considerations
 
@@ -190,18 +175,32 @@ Reference: [How to Measure Cortical Folding from MR Images](https://pmc.ncbi.nlm
 |--------|-----|-----|
 | Tissue contrast | Lower | Higher |
 | Absolute volumes | Include extra-cranial tissue | More accurate segmentation |
+| Gyrification | Approximation only | Gold standard (Zilles method) |
 | Recommended metrics | **Ratios and indices** | Both volumes and ratios |
 | Speed | Fast | Slower |
+| Cost | Lower | Higher |
+
+## Normative Data Sources
+
+The comparison values are based on peer-reviewed neuroimaging studies:
+
+- Allen, J. S., et al. (2002). *Normal neuroanatomical variation in the human brain*
+- Sled, J. G., et al. (2010). *Regional variations in gray matter morphometry*
+- [Lifespan Gyrification Trajectories](https://www.nature.com/articles/s41598-017-00582-1) - Nature Scientific Reports (PMC5428697)
+- [Inter-scanner HU variability](https://pubmed.ncbi.nlm.nih.gov/30017694/) - AJEM 2018
+- [CT-determined intracranial volume](https://pubmed.ncbi.nlm.nih.gov/11314299/) - Normal population values
+- [Gray-to-white matter ratio](https://pubmed.ncbi.nlm.nih.gov/18843066/) - CT density studies
 
 ## Limitations
 
-⚠️ **This tool is for research and educational purposes only.**
+**This tool is for research and educational purposes only.**
 
 - CT scans have lower tissue contrast than MRI
-- Volume measurements include some non-brain tissue
+- Volume measurements from CT include some non-brain tissue
 - **Ratios and proportions are more reliable than absolute volumes**
-- Gyrification calculated from CT is an approximation (MRI preferred for precise measurement)
+- Gyrification calculated from CT is an approximation (MRI preferred)
 - Cannot detect pathologies - consult a medical professional for diagnosis
+- Inter-scanner variability affects HU measurements
 
 ## Research Applications
 
@@ -212,6 +211,13 @@ Potential uses for cognitive signatures:
 - **Biometric research** - Brain-based identification
 - **AI training** - Structural brain feature extraction
 - **Cognitive modeling** - Correlate structure with function
+
+## Future Development
+
+- [ ] MRI T1 3D support with FreeSurfer integration
+- [ ] Blood biomarker correlation module
+- [ ] Age-adjusted normative comparisons
+- [ ] Multi-subject batch processing
 
 ## Contributing
 
