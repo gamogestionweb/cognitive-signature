@@ -2,6 +2,8 @@
 
 **Extract unique cognitive fingerprints from brain CT/MRI scans.**
 
+![Cognitive Signature Report](docs/images/cognitive_signature_report.png)
+
 This tool analyzes brain medical images (DICOM format) and generates a unique "cognitive signature" - a fingerprint based on structural brain features that can potentially identify individual differences in brain organization.
 
 ## What is a Cognitive Signature?
