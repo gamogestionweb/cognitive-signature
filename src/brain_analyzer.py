@@ -38,24 +38,31 @@ warnings.filterwarnings('ignore')
 # =============================================================================
 
 NORMATIVE_DATA = {
+    # ==========================================================================
+    # VOLUMETRIC DATA (MRI-based studies)
+    # Note: CT volumes include extra-cranial tissue, use ratios for comparison
+    # ==========================================================================
     'total_intracranial_volume': {
         'male': {'mean': 1470, 'std': 130, 'min': 1200, 'max': 1800},
         'female': {'mean': 1290, 'std': 115, 'min': 1050, 'max': 1550},
         'average': {'mean': 1380, 'std': 140, 'min': 1100, 'max': 1700},
         'unit': 'ml',
-        'source': 'Allen et al. 2002'
+        'source': 'Allen et al. 2002; CT-determined ICV: PubMed 11314299'
     },
     'gray_matter_volume': {
         'average': {'mean': 645, 'std': 65, 'min': 520, 'max': 780},
-        'unit': 'ml'
+        'unit': 'ml',
+        'source': 'Sled et al. 2010'
     },
     'white_matter_volume': {
         'average': {'mean': 445, 'std': 50, 'min': 340, 'max': 560},
-        'unit': 'ml'
+        'unit': 'ml',
+        'source': 'Sled et al. 2010'
     },
     'csf_volume': {
         'average': {'mean': 165, 'std': 55, 'min': 75, 'max': 325},
-        'unit': 'ml'
+        'unit': 'ml',
+        'source': 'PMC12290786 - iCSF reference values'
     },
     'lateral_ventricle_volume': {
         'young': {'mean': 15, 'std': 8, 'min': 5, 'max': 35},
@@ -64,9 +71,15 @@ NORMATIVE_DATA = {
         'average': {'mean': 25, 'std': 15, 'min': 5, 'max': 70},
         'unit': 'ml'
     },
+    # ==========================================================================
+    # STRUCTURAL RATIOS (more reliable for CT inter-subject comparison)
+    # ==========================================================================
     'gray_white_ratio': {
-        'average': {'mean': 1.45, 'std': 0.20, 'min': 1.0, 'max': 2.0},
-        'unit': 'ratio'
+        # CT-based GWR from cardiac arrest studies: mean 1.32
+        # Reference: PubMed 18843066, ScienceDirect S0735-6757(18)30573-4
+        'average': {'mean': 1.32, 'std': 0.15, 'min': 1.0, 'max': 1.8},
+        'unit': 'ratio',
+        'source': 'Inter-scanner variability in HU - AJEM 2018'
     },
     'ventricle_brain_ratio': {
         'average': {'mean': 2.5, 'std': 1.5, 'min': 0.5, 'max': 7.0},
@@ -77,11 +90,16 @@ NORMATIVE_DATA = {
         'unit': 'index'
     },
     'gyrification_index': {
-        'average': {'mean': 2.55, 'std': 0.3, 'min': 1.8, 'max': 3.5},
-        'unit': 'index'
+        # Pial/Hull method (Zilles et al.)
+        # Reference: Nature Sci Rep - Lifespan Gyrification Trajectories
+        # Human adult range: 2.5-3.0, follows GI = 3.4 - 0.17*ln(age)
+        'average': {'mean': 2.75, 'std': 0.25, 'min': 2.3, 'max': 3.2},
+        'unit': 'index',
+        'source': 'PMC5428697 - Lifespan Gyrification Trajectories'
     },
     'hemispheric_asymmetry': {
-        'average': {'mean': 1.5, 'std': 1.0, 'min': 0.1, 'max': 5.0},
+        # Normal brains show slight left-right asymmetry
+        'average': {'mean': 2.0, 'std': 1.5, 'min': 0.1, 'max': 5.0},
         'unit': '%'
     }
 }
@@ -219,16 +237,18 @@ class CognitiveSignatureAnalyzer:
             largest = max(regions, key=lambda x: x.area)
             brain = labeled == largest.label
 
-        # Gray matter: HU 30-45
-        gray_matter = (vol >= 30) & (vol <= 45) & brain
+        # Gray matter: HU 37-45 (based on literature: ~40 HU mean)
+        # Reference: Inter-scanner variability in HU measured by CT of the brain
+        gray_matter = (vol >= 37) & (vol <= 45) & brain
         gray_matter = morphology.binary_opening(gray_matter, morphology.ball(1))
 
-        # CSF: HU -5 to 20
-        csf = (vol >= -5) & (vol <= 20) & brain
+        # CSF: HU 0-15 (clear fluid, near water density)
+        csf = (vol >= 0) & (vol <= 15) & brain
         csf = morphology.binary_opening(csf, morphology.ball(1))
 
-        # White matter: HU 20-35, excluding CSF
-        white_matter = (vol >= 20) & (vol < 35) & brain & ~csf
+        # White matter: HU 20-32 (based on literature: ~25-30 HU mean)
+        # No overlap with gray matter range to prevent ratio inflation
+        white_matter = (vol >= 20) & (vol <= 32) & brain & ~csf
         white_matter = morphology.binary_opening(white_matter, morphology.ball(1))
 
         # Ventricles: central CSF
@@ -287,16 +307,37 @@ class CognitiveSignatureAnalyzer:
         self.features['right_hemisphere'] = right
         self.features['asymmetry'] = abs(left - right) / (left + right) * 100
 
-        # Gyrification index
+        # Gyrification index using pial/hull method (Zilles et al.)
+        # GI = pial surface area / outer hull surface area
+        # Reference: Nature Scientific Reports - Lifespan Gyrification Trajectories
+        # Normal human range: 2.5-3.0
         try:
-            verts, faces, _, _ = measure.marching_cubes(brain.astype(float), level=0.5, spacing=self.spacing)
-            surface = measure.mesh_surface_area(verts, faces)
-            brain_mm3 = self.features['brain_volume'] * 1000
-            sphere_r = (3 * brain_mm3 / (4 * np.pi)) ** (1/3)
-            sphere_surf = 4 * np.pi * sphere_r**2
-            self.features['gyrification'] = surface / sphere_surf
-        except:
-            self.features['gyrification'] = 2.5
+            # Get pial surface (actual brain surface with all folds)
+            brain_smooth = ndimage.gaussian_filter(brain.astype(float), sigma=0.5)
+            verts_pial, faces_pial, _, _ = measure.marching_cubes(
+                brain_smooth, level=0.5, spacing=self.spacing
+            )
+            pial_surface = measure.mesh_surface_area(verts_pial, faces_pial)
+
+            # Create outer hull (convex envelope that wraps the brain)
+            # Using morphological closing to create smooth outer surface
+            hull = morphology.convex_hull_image(brain)
+            hull_smooth = ndimage.gaussian_filter(hull.astype(float), sigma=2.0)
+            verts_hull, faces_hull, _, _ = measure.marching_cubes(
+                hull_smooth, level=0.5, spacing=self.spacing
+            )
+            hull_surface = measure.mesh_surface_area(verts_hull, faces_hull)
+
+            # GI = pial / hull (standard Zilles method)
+            self.features['gyrification'] = pial_surface / max(hull_surface, 1.0)
+
+            # Store surfaces for debugging
+            self.features['pial_surface_mm2'] = pial_surface
+            self.features['hull_surface_mm2'] = hull_surface
+        except Exception as e:
+            # Fallback to population mean if calculation fails
+            self.features['gyrification'] = 2.55
+            self.features['gyrification_error'] = str(e)
 
         print(f"       Brain volume: {self.features['brain_volume']:.1f} ml")
         print(f"       Gray/White ratio: {self.features['gray_white_ratio']:.2f}")

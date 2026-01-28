@@ -142,12 +142,21 @@ Here's an example output from a real brain CT scan (Subject #1):
 
 ### Key Metrics Explained
 
-| Metric | What it measures | Clinical relevance |
-|--------|------------------|-------------------|
-| **Gray/White Ratio** | Proportion of cortex to white matter | Higher values may indicate preserved cognitive function |
-| **Gyrification Index** | Cortical folding complexity | Higher = more cortical surface area |
-| **Ventricular Volume** | Size of fluid-filled spaces | Enlargement may indicate atrophy |
-| **Hemispheric Asymmetry** | Balance between hemispheres | Normal brains have slight asymmetry |
+| Metric | What it measures | Normal Range | Method |
+|--------|------------------|--------------|--------|
+| **Gray/White Ratio** | Proportion of cortex to white matter | 1.0 - 1.8 | HU thresholding (GM: 37-45, WM: 20-32) |
+| **Gyrification Index** | Cortical folding complexity | 2.3 - 3.2 | Pial/Hull surface ratio (Zilles method) |
+| **Ventricular Volume** | Size of fluid-filled spaces | 5 - 70 ml | Central CSF segmentation |
+| **Hemispheric Asymmetry** | Balance between hemispheres | 0.1 - 5% | L-R volume difference |
+
+### Hounsfield Unit (HU) Ranges for CT Segmentation
+
+| Tissue | HU Range | Reference |
+|--------|----------|-----------|
+| Gray Matter | 37 - 45 HU | Mean ~40 HU |
+| White Matter | 20 - 32 HU | Mean ~25-30 HU |
+| CSF | 0 - 15 HU | Near water density |
+| Bone/Skull | > 300 HU | Cortical bone |
 
 ## Normative Data Sources
 
@@ -155,7 +164,34 @@ The comparison values are based on peer-reviewed neuroimaging studies:
 
 - Allen, J. S., et al. (2002). *Normal neuroanatomical variation in the human brain*
 - Sled, J. G., et al. (2010). *Regional variations in gray matter morphometry*
-- Courchesne, E., et al. (2000). *Normal brain development and aging*
+- [Lifespan Gyrification Trajectories](https://www.nature.com/articles/s41598-017-00582-1) - Nature Scientific Reports
+- [Inter-scanner HU variability](https://pubmed.ncbi.nlm.nih.gov/30017694/) - AJEM 2018
+- [CT-determined intracranial volume](https://pubmed.ncbi.nlm.nih.gov/11314299/) - Normal population values
+
+## Methodology
+
+### Gyrification Index Calculation
+
+This tool uses the **Zilles method** (pial/hull ratio) for gyrification calculation:
+
+```
+GI = Pial Surface Area / Outer Hull Surface Area
+```
+
+- **Pial surface**: The actual brain surface including all gyri and sulci
+- **Outer hull**: A smooth convex envelope that wraps the brain
+- **Normal human range**: 2.3 - 3.2 (decreases with age: GI ≈ 3.4 - 0.17×ln(age))
+
+Reference: [How to Measure Cortical Folding from MR Images](https://pmc.ncbi.nlm.nih.gov/articles/PMC3369773/)
+
+### CT vs MRI Considerations
+
+| Aspect | CT | MRI |
+|--------|-----|-----|
+| Tissue contrast | Lower | Higher |
+| Absolute volumes | Include extra-cranial tissue | More accurate segmentation |
+| Recommended metrics | **Ratios and indices** | Both volumes and ratios |
+| Speed | Fast | Slower |
 
 ## Limitations
 
@@ -164,6 +200,7 @@ The comparison values are based on peer-reviewed neuroimaging studies:
 - CT scans have lower tissue contrast than MRI
 - Volume measurements include some non-brain tissue
 - **Ratios and proportions are more reliable than absolute volumes**
+- Gyrification calculated from CT is an approximation (MRI preferred for precise measurement)
 - Cannot detect pathologies - consult a medical professional for diagnosis
 
 ## Research Applications
