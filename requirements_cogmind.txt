@@ -1,0 +1,22 @@
+# CogMind — Cognitive Emulation from Cognitive Signature
+# Core dependencies (required)
+numpy>=1.24.0
+
+# Optional: High-fidelity SNN simulation
+# brian2>=2.5.0         # Brian2 simulator (recommended for prototyping)
+# norse>=1.0.0          # PyTorch SNN (GPU acceleration)
+# nest-simulator>=3.0   # NEST (C++, large-scale)
+
+# Optional: Visualization
+# matplotlib>=3.7.0
+# plotly>=5.0.0
+
+# Optional: Analysis
+# scipy>=1.10.0
+# networkx>=3.0
+# scikit-learn>=1.2.0
+
+# From cognitive-signature (parent project)
+pydicom>=2.4.0
+scikit-image>=0.20.0
+plotly>=5.0.0

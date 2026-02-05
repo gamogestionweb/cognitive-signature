@@ -1,0 +1,44 @@
+{
+  "signature_id": "BRAIN-5C13EB2BADEB",
+  "uniqueness_score": 100,
+  "scan_type": "CT",
+  "timestamp": "2026-01-01T00:00:00",
+  "metrics": {
+    "total_brain_volume_ml": 5294.31,
+    "gray_matter_ml": 1717.47,
+    "white_matter_ml": 566.54,
+    "csf_volume": 160.58,
+    "ventricular_volume": 27.48,
+    "gray_white_ratio": 3.03,
+    "gyrification_index": 5.33,
+    "hemispheric_asymmetry": 3.30,
+    "regional_distribution": {
+      "frontal": 32.1,
+      "parietal": 24.8,
+      "temporal": 21.5,
+      "occipital": 14.2,
+      "central": 7.4
+    },
+    "percentiles": {
+      "brain_volume": 99,
+      "gray_matter": 99,
+      "white_matter": 99,
+      "ventricles": 57,
+      "csf": 75,
+      "gray_white_ratio": 99,
+      "gyrification": 99,
+      "asymmetry": 67
+    },
+    "z_scores": {
+      "brain_volume": 28.17,
+      "gray_matter": 16.56,
+      "white_matter": 2.43,
+      "ventricles": 0.17,
+      "csf": 0.69,
+      "gray_white_ratio": 10.53,
+      "gyrification": 9.27,
+      "asymmetry": 0.43
+    }
+  },
+  "notes": "High absolute volumes due to CT scan including soft tissue. Ratios and indices are more reliable for inter-subject comparison."
+}
