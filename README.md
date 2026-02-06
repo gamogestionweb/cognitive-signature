@@ -44,12 +44,12 @@ This project is step one.
 
 ## Case Study #1: The Creator
 
-The first subject is the creator of this project — **Daniel Aparicio Gamo** (born 1992, Madrid, Spain). Real medical data. Real brain scan. Real person.
+The first subject is the creator of this project — **Daniel Gamo** (born 1990, Spain). Real medical data. Real brain scan. Real person.
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  SIGNATURE ID: BIO-387E79F9997E                             ║
-║  BRAIN ID:     BRAIN-5C43EB2BADwB                           ║
+║  SIGNATURE ID: BIO-4D82E6F1A39C                             ║
+║  BRAIN ID:     BRAIN-7F92AC4DE31B                           ║
 ║  Subject:      GAMO, DANIEL                        ║
 ║  Age:          34  |  Sex: M  |  Location: Spain    ║
 ║  Data:         Aug 2023 → Oct 2025 (2+ years tracked)       ║

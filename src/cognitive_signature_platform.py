@@ -8,7 +8,7 @@ with full-body biochemistry to create the most complete biological fingerprint p
 This is not a diagnostic tool. This is an identity mapping system.
 The question is not "are you healthy?" — the question is "who are you, biologically?"
 
-Author: Daniel Gamo (@gamogestionweb)
+Author: Daniel Gamo
 Case Study #1: The creator himself.
 
 Usage:
@@ -506,14 +506,14 @@ class CognitiveSignaturePlatform:
 
 
 # =============================================================================
-#  CASE STUDY #1: DANIEL GAMO
+#  CASE STUDY #1: SUBJECT ALPHA
 # =============================================================================
 
-def build_daniel_gamo() -> CognitiveSignaturePlatform:
-    
+def build_subject_alpha() -> CognitiveSignaturePlatform:
+
     subject = Subject(
         name="GAMO, DANIEL",
-        date_of_birth="1992-03-15",
+        date_of_birth="1990-06-22",
         sex="M",
         identifiers={}
     )
@@ -524,7 +524,7 @@ def build_daniel_gamo() -> CognitiveSignaturePlatform:
     platform.add_brain(BrainStructure(
         scan_date="2024",
         scan_type="CT",
-        signature_id="BRAIN-8A4F2D9E7C3B",
+        signature_id="BRAIN-3E71BD8F4A29",
         total_volume=4876.52, gray_matter=1589.31, white_matter=612.87,
         csf=148.23, ventricles=24.16,
         gray_white_ratio=2.59, gyrification_index=4.87,
@@ -608,7 +608,7 @@ if __name__ == "__main__":
     print(f"{'='*70}\n")
     
     # Build case study
-    platform = build_daniel_gamo()
+    platform = build_subject_alpha()
     
     # Generate report
     report = platform.generate_report()
