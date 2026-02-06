@@ -1,375 +1,270 @@
-# 🧠 Cognitive Signature → CogMind
+# 🧬 Cognitive Signature Platform
 
-<div align="center">
-
-**From Brain Scan to Mind Emulation**
-
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-
-[What is this?](#what-is-this) • [Quick Start](#quick-start) • [Architecture](#architecture) • [The Science](#the-science) • [Modules](#modules)
-
----
-
-### This is not another chatbot. This is cognitive emulation.
-
-</div>
+### Mapping the complete biological identity of a human being.
 
 ---
 
 ## What is this?
 
-Two integrated systems:
+Every human is unique. Not just because of their brain — because of their **entire body**. Your blood chemistry, your hormones, your immune system, the physical structure of your brain — all of it together is what makes you *you*.
 
-| Layer | What it does | Output |
-|-------|--------------|--------|
-| **Cognitive Signature** | Analyzes brain CT/MRI scans | `signature.json` — your brain's structural fingerprint |
-| **CogMind** | Takes that fingerprint and builds a spiking neural network | A running mind emulation |
+This project creates a **biological fingerprint** by combining:
 
-```
-DICOM Scan → signature.json → Spiking Neural Network → Cognitive Emulation
-```
+- 🧠 **Brain structure** from CT/MRI scans
+- 🩸 **Blood chemistry** across multiple time points
+- ⚗️ **Hormones** (thyroid, metabolic)
+- 🦠 **Immunological history** (what infections you've encountered)
+- 🧪 **Toxicology** (what chemicals your body has been exposed to)
+- 💧 **Urinalysis**
+- 📈 **Temporal evolution** (how your biology changes over time)
 
-**The key insight:** We don't replicate every synapse. We create a system that, given the same macro structure (your signature), the same learning rules (biological plasticity), and environmental exposure, converges toward similar processing patterns.
+The result is a unique **Biological Signature ID** — a hash-based fingerprint derived from your complete biological data.
 
----
-
-## What CogMind Has That LLMs Don't
-
-| Feature | LLMs (GPT, Claude, etc.) | CogMind |
-|---------|--------------------------|---------|
-| **Recurrence** | Residual connections only | Real thalamo-cortical loops |
-| **Plasticity** | Frozen after training | STDP modifies weights *during* processing |
-| **Temporal dynamics** | None (stateless) | Theta/Alpha/Gamma oscillations |
-| **Global states** | None | Neuromodulation: alert, relaxed, focused, creative |
-| **Self-modification** | Impossible | The system changes itself |
-
-These are the 5 ingredients that IIT (Integrated Information Theory) identifies as necessary for generating Φ (integrated information).
+> **This is not a medical tool.** This doesn't tell you if you're sick. It tells you *who you are*, biologically.
 
 ---
 
-## Architecture
+## The Philosophy
 
-```
-╔══════════════════════════════════════════════════════════════════════════╗
-║                         CogMind Architecture                             ║
-╠══════════════════════════════════════════════════════════════════════════╣
-║                                                                          ║
-║  ┌────────────────────────────────────────────────────────────────────┐  ║
-║  │              LAYER 7: VIRTUAL ENVIRONMENT (I/O)                    │  ║
-║  │         Simulated sensors ←→ Motor output ←→ Reward signals        │  ║
-║  └──────────────────────────┬─────────────────────────────────────────┘  ║
-║                             │                                            ║
-║  ┌──────────────────────────┴─────────────────────────────────────────┐  ║
-║  │              LAYER 6: NEUROMODULATION                              │  ║
-║  │       Dopamine · Serotonin · Noradrenaline · Acetylcholine         │  ║
-║  │       (The 4 "global dials" that create mental states)             │  ║
-║  └──────────┬───────────────────────────────────┬─────────────────────┘  ║
-║             │                                   │                        ║
-║  ┌──────────┴───────────────────────────────────┴─────────────────────┐  ║
-║  │              LAYER 5: CORTEX (Recurrent SNN Modules)               │  ║
-║  │       FRONTAL ←→ PARIETAL ←→ TEMPORAL ←→ OCCIPITAL                 │  ║
-║  │       100,000+ LIF neurons with adaptive thresholds                │  ║
-║  └──────────┬───────────────────────────────────┬─────────────────────┘  ║
-║             │                                   │                        ║
-║  ┌──────────┴───────────────────────────────────┴─────────────────────┐  ║
-║  │              LAYER 4: THALAMUS                                     │  ║
-║  │       Oscillator (θ/α/γ) + Router + Attention Gate                 │  ║
-║  │       Creates the temporal binding windows for integration         │  ║
-║  └────────────────────────────────────────────────────────────────────┘  ║
-║                                                                          ║
-║  ┌────────────────────────────────────────────────────────────────────┐  ║
-║  │              LAYER 3: PLASTICITY                                   │  ║
-║  │       STDP + Reward-Modulated STDP + Homeostatic regulation        │  ║
-║  │       The network learns and adapts in real-time                   │  ║
-║  └────────────────────────────────────────────────────────────────────┘  ║
-║                                                                          ║
-║  ┌────────────────────────────────────────────────────────────────────┐  ║
-║  │              LAYER 2: HIPPOCAMPUS                                  │  ║
-║  │       Episodic memory · Pattern separation · Replay · Consolidation║  ║
-║  └────────────────────────────────────────────────────────────────────┘  ║
-║                                                                          ║
-║  ┌────────────────────────────────────────────────────────────────────┐  ║
-║  │              LAYER 1: COGNITIVE SIGNATURE (Structural Seed)        │  ║
-║  │       Your brain scan → volumes, ratios, gyrification, asymmetry   │  ║
-║  │       This is what makes YOUR emulation unique                     │  ║
-║  └────────────────────────────────────────────────────────────────────┘  ║
-╚══════════════════════════════════════════════════════════════════════════╝
-```
+Traditional neuroscience looks at the brain in isolation. But that's like reading one chapter of a book and claiming you know the whole story.
+
+Your mind doesn't live only in your skull. It lives in:
+
+- The **hormones** that regulate your mood and cognitive speed
+- The **immune cells** that communicate with your brain via cytokines
+- The **gut bacteria** that produce serotonin and GABA
+- The **blood** that carries oxygen and nutrients to every neuron
+- The **peripheral nerves** that define how you physically feel the world
+
+**If you want to truly map a human identity, you need to map the whole body.**
+
+This project is step one.
 
 ---
 
-## Quick Start
+## Case Study #1: The Creator
 
-### Installation
+The first subject is the creator of this project — **Daniel Aparicio Gamo** (born 1992, Madrid, Spain). Real medical data. Real brain scan. Real person.
+
+```
+╔══════════════════════════════════════════════════════════════╗
+║  SIGNATURE ID: BIO-387E79F3997E                             ║
+║  BRAIN ID:     BRAIN-5C13EB2BADEB                           ║
+║  Subject:      APARICIO GAMO, DANIEL                        ║
+║  Age:          34  |  Sex: M  |  Location: Madrid, Spain    ║
+║  Data:         Aug 2023 → Oct 2025 (2+ years tracked)       ║
+║  Completeness: 50% (8 of 16 biological systems mapped)      ║
+╚══════════════════════════════════════════════════════════════╝
+```
+
+### What makes this individual biologically distinctive:
+
+| Marker | Value | Population Norm | Z-Score | What it means |
+|--------|-------|----------------|---------|---------------|
+| Eosinophils | 0.7 x10³/µl | 0.0 - 0.5 | +3.60 | Unique immune/allergic phenotype |
+| Eosinophils % | 9.2% | 0.4 - 6.5% | +3.77 | Top 1% of population |
+| Neutrophils % | 39.6% | 41.5 - 72% | -2.25 | Below range — lymphocyte-dominant |
+| LDL Cholesterol | 121 mg/dl | < 100 | +2.84 | Slightly elevated |
+| Total Cholesterol | 205 mg/dl | < 200 | +2.10 | Borderline |
+
+### Immune Profile: **Lymphocyte-Dominant**
+
+Most adults have more neutrophils than lymphocytes. This subject has the opposite (lymphocytes 42.1% vs neutrophils 39.6%). Only about 15-20% of healthy adult males show this pattern. It suggests a strong adaptive immune system.
+
+### How the body changed over 2 years (2023 → 2025):
+
+| Metric | Change | Direction | Interpretation |
+|--------|--------|-----------|----------------|
+| Eosinophils | +75.0% | ↑ | Immune system shift |
+| Triglycerides | -37.9% | ↓ | Significant metabolic improvement |
+| HDL Cholesterol | +29.1% | ↑ | Better cardiovascular protection |
+| Creatinine | -17.2% | ↓ | Improved kidney function |
+| Hemoglobin | +7.9% | ↑ | Better oxygen carrying capacity |
+
+---
+
+## How It Works
+
+### 1. Collect Data
+
+You need medical lab results. In most countries, you can request your blood test results from your doctor. Brain scans (CT or MRI) require a medical referral.
+
+### 2. Run the Analysis
 
 ```bash
 git clone https://github.com/gamogestionweb/cognitive-signature.git
 cd cognitive-signature
 pip install -r requirements.txt
+
+# Run the platform with the built-in case study
+python src/cognitive_signature_platform.py ./output
+
+# Or import and build your own
+python -c "
+from src.cognitive_signature_platform import *
+subject = Subject('YOUR NAME', '1990-01-01', 'M')
+platform = CognitiveSignaturePlatform(subject)
+# Add your data...
+report = platform.generate_report()
+print(report['signature_id'])
+"
 ```
 
-### Step 1: Extract Cognitive Signature (from brain scan)
+### 3. Get Your Signature
 
-```python
-from src.brain_analyzer import CognitiveSignatureAnalyzer
-
-analyzer = CognitiveSignatureAnalyzer("path/to/dicom/folder")
-analyzer.run_analysis()
-analyzer.generate_report("./output")
-# → produces signature.json
-```
-
-### Step 2: Run CogMind Emulation
-
-```python
-from cogmind_runner import CogMindInstance
-
-# One line: signature → running mind
-instance = CogMindInstance.from_signature(
-    "output/signature.json",
-    n_neurons=100_000,
-    env_type="pattern_recognition"
-)
-
-# Run 5 seconds of cognitive emulation
-instance.run(duration_ms=5000)
-```
-
-### What you'll see:
-
-```
-╔══════════════════════════════════════════════╗
-║        CogMind — Cognitive Emulation         ║
-║     From Cognitive Signature to Mind          ║
-╚══════════════════════════════════════════════╝
-
-[TopologyGenerator] Loaded signature: BRAIN-5C13EB2BADEB
-  Modules: frontal_L, frontal_R, parietal_L, parietal_R, temporal_L...
-  Neurons: 100,000 [E:80,000 / I:20,000]
-  Synapses: 1,842,567
-
-[CogMind] Running 5000ms simulation...
-
-  ─── t=1000ms ───
-  Speed: 0.087x realtime
-  Firing rate: 6.6 Hz
-  Cognitive state: alert_engaged
-  Neuromod: DA=1.44, 5HT=0.99, NE=1.11, ACh=0.58
-  Episodes stored: 12
-
-[CogMind] ✓ Complete
-```
+The platform outputs:
+- A **unique Signature ID** (SHA-256 hash of all your biological data)
+- **Z-scores** for every metric (how you compare to population norms)
+- **Computed indices** (inflammation, cardiovascular risk, liver health, immune profile)
+- **Temporal evolution** (how your biology changes between measurements)
+- **Distinctive markers** (what makes you biologically unique)
+- **Interactive dashboard** (HTML file you can open in any browser)
 
 ---
 
-## The 8 Modules
+## Output Files
 
-| Module | What it does | Biological equivalent |
-|--------|--------------|----------------------|
-| `topology_generator.py` | signature.json → network graph | Connectome |
-| `snn_engine.py` | LIF neurons with axonal delays | Cortical columns |
-| `plasticity.py` | STDP + R-STDP + homeostasis | Synaptic learning |
-| `thalamus.py` | θ/α/γ oscillations + gating | Thalamic nuclei |
-| `neuromodulation.py` | DA/5HT/NE/ACh modulation | Brainstem + basal forebrain |
-| `hippocampus.py` | Episodic memory + replay | Hippocampal formation |
-| `environment.py` | Sensory input + motor output | Body interface |
-| `cogmind_runner.py` | Integrates everything | The whole brain |
+| File | What it is |
+|------|------------|
+| `output/signature_report.json` | Complete raw data — every metric, Z-score, index, and analysis |
+| `output/cognitive_signature_platform.html` | Interactive visual dashboard — open in any browser |
+| `src/cognitive_signature_platform.py` | The platform source code |
+| `src/brain_analyzer.py` | Original brain CT/MRI analyzer (v1) |
 
 ---
 
-## How Your Signature Maps to the Network
+## Computed Biological Indices
 
-Your brain scan isn't just data — it's the **seed** that makes your emulation unique:
+The platform doesn't just store numbers — it computes derived indices that reveal systemic patterns:
 
-| Your Metric | Example | Network Parameter | Effect |
-|-------------|---------|-------------------|--------|
-| Regional distribution | F:32% P:25% T:21% O:14% | `module_sizes[]` | More frontal neurons = more executive processing |
-| Gray/white ratio | 3.03 | `local_vs_long_connectivity` | Higher = more local processing |
-| Gyrification index | 5.33 | `columns_per_module` | More folds = more parallel processing |
-| Hemispheric asymmetry | 3.30% left | `hemisphere_ratio` | Left-dominant processing |
-| Ventricular volume | 27.48 ml | `pruning_rate` | Network sparsity |
-| CSF volume | 160.58 ml | `homeostatic_rate` | Regulation aggressiveness |
-
----
-
-## The Science
-
-### Why Spiking Neural Networks?
-
-Real neurons communicate with **spikes** (action potentials), not continuous values. This matters because:
-
-1. **Spike timing encodes information** — Two neurons firing 5ms apart means something different than 50ms apart
-2. **Oscillations emerge naturally** — Gamma waves aren't programmed, they emerge from network dynamics
-3. **Energy efficiency** — Sparse spiking is how brains compute with 20 watts
-
-### Why Neuromodulation?
-
-LLMs have fixed activation functions. Your brain has **four global dials**:
-
-| Neuromodulator | What it controls | Effect |
-|----------------|------------------|--------|
-| **Dopamine** | Learning rate | High DA = learn faster from recent events |
-| **Serotonin** | Firing threshold | High 5HT = more selective, less noise |
-| **Noradrenaline** | Signal gain | High NE = sharper discrimination |
-| **Acetylcholine** | Internal vs external | High ACh = attend to senses, not memories |
-
-This is how brains have **states** (alert, drowsy, focused, creative). LLMs can't do this.
-
-### Why Thalamo-Cortical Loops?
-
-The thalamus isn't just a relay — it's the **binding mechanism**:
-
-- **Gamma oscillations (30-100 Hz)** create 10-33ms windows where distant neurons can synchronize
-- This synchronization is what **integrates information** across brain regions
-- Without it, you have parallel processing but no unified experience
-
-This is the physical substrate for consciousness according to IIT (Integrated Information Theory).
+| Index | Formula | What it reveals |
+|-------|---------|-----------------|
+| **NLR** | Neutrophils ÷ Lymphocytes | Systemic inflammation (lower = less inflammation) |
+| **PLR** | Platelets ÷ Lymphocytes | Thromboinflammatory state |
+| **Atherogenic Index** | (Total Chol - HDL) ÷ HDL | Cardiovascular risk |
+| **De Ritis Ratio** | AST ÷ ALT | Liver integrity |
+| **TSH Index** | TSH × Free T4 | Thyroid hormone sensitivity |
+| **Immune Profile** | Lymphocyte% vs Neutrophil% | Adaptive vs innate immunity dominance |
 
 ---
 
-## Cognitive Signature (Original Module)
+## What We've Captured (and What's Still Missing)
 
-Before CogMind, you need a signature. Here's what the analyzer extracts:
+### ✅ Mapped Systems (50%)
 
-### Metrics
+- Brain structural analysis (CT)
+- Complete blood chemistry (2 time points)
+- Hematology (red cells, white cells, platelets)
+- Lipid profile
+- Hepatic function
+- Renal function
+- Electrolyte balance
+- Thyroid hormones
+- Vitamins (B12, folic acid)
+- Iron metabolism
+- Glycated hemoglobin
+- Urinalysis
+- 10-panel toxicology
+- Serology (Hep B/C, HIV, syphilis, EBV)
 
-| Metric | What it measures | Normal Range |
-|--------|------------------|--------------|
-| Brain volume | Total tissue volume | ~1350 ml |
-| Gray matter | Cortical volume | ~645 ml |
-| White matter | Axonal connections | ~445 ml |
-| Gray/White ratio | Cortical density | 1.0 - 1.8 |
-| Gyrification index | Folding complexity | 2.3 - 3.2 |
-| Ventricular volume | Internal fluid spaces | 5 - 70 ml |
-| Hemispheric asymmetry | L/R balance | 0.1 - 5% |
+### ❌ Missing Systems (50%)
 
-### Example Output
-
-```
-======================================================================
-                    COGNITIVE SIGNATURE REPORT
-======================================================================
-
-   SIGNATURE ID: BRAIN-5C13EB2BADEB
-   Uniqueness Score: 100/100
-
-======================================================================
-                       STRUCTURAL INDICES
-======================================================================
-
-   Gray/White Ratio:         3.03    (Population mean: 1.45)
-   Gyrification Index:       5.33    (Population mean: 2.55)
-   Hemispheric Asymmetry:    3.30%   (Left hemisphere dominant)
-
-======================================================================
-                    REGIONAL DISTRIBUTION
-======================================================================
-
-   Frontal Region:          32.1%   ████████████████
-   Parietal Region:         24.8%   ████████████
-   Temporal Region:         21.5%   ██████████
-   Occipital Region:        14.2%   ███████
-   Central Region:           7.4%   ███
-
-======================================================================
-```
-
----
-
-## Scaling
-
-| Scale | Neurons | Hardware | Speed | Equivalence |
-|-------|---------|----------|-------|-------------|
-| **Demo** | 1K | Laptop CPU | Real-time | Proof of concept |
-| **Prototype** | 100K | 1× GPU | ~10x slower | Minicolumn |
-| **Alpha** | 1M | 8× GPU | ~100x slower | Small cortical region |
-| **Beta** | 100M | Supercomputer | ~1000x slower | Mouse brain |
-| **Full** | 86B | Exascale | Unknown | Human brain |
-
----
-
-## File Structure
-
-```
-cognitive-signature/
-├── src/
-│   └── brain_analyzer.py      # DICOM → signature.json
-├── docs/
-│   └── cogmind_architecture.html
-├── cogmind_runner.py          # Main integration
-├── topology_generator.py      # Signature → network graph
-├── snn_engine.py              # LIF spiking neural network
-├── plasticity.py              # STDP learning rules
-├── thalamus.py                # Oscillations + attention
-├── neuromodulation.py         # DA/5HT/NE/ACh system
-├── hippocampus.py             # Episodic memory
-├── environment.py             # Virtual I/O
-├── example_signature.json     # Test signature
-├── requirements.txt
-└── setup.py
-```
+| System | What's needed | Why it matters |
+|--------|---------------|----------------|
+| **Connectome** | DTI + resting-state fMRI | Maps the brain's wiring — how regions communicate |
+| **Peripheral Nervous System** | Nerve conduction studies | How your body sends signals to the brain |
+| **Sensory Receptor Map** | Somatosensory testing | How you physically experience touch, pain, temperature |
+| **Microbiome** | 16S rRNA gut sequencing | Your gut bacteria produce neurotransmitters |
+| **Full Endocrine** | Cortisol, testosterone, insulin, IGF-1 | Hormones drive behavior and cognition |
+| **Inflammatory Cytokines** | CRP, IL-6, TNF-alpha | Chronic inflammation affects brain function |
+| **Genome** | Whole genome sequencing | Your biological source code |
+| **Epigenetics** | DNA methylation array | How life experience modified your gene expression |
 
 ---
 
 ## Roadmap
 
-- [x] Cognitive Signature extraction from CT/MRI
-- [x] Topology generator from signature
-- [x] LIF spiking neural network engine
-- [x] STDP + R-STDP plasticity
-- [x] Thalamic oscillator + attention gating
-- [x] Neuromodulation system (DA/5HT/NE/ACh)
-- [x] Hippocampal memory system
-- [x] Virtual environment interface
-- [ ] Brian2/NEST backend integration
-- [ ] Real-time visualization dashboard
-- [ ] Multi-modal sensory environments
-- [ ] Neuromorphic hardware support (Loihi, SpiNNaker)
+| Phase | Status | Description |
+|-------|--------|-------------|
+| 1 | ✅ Done | Brain structural signature from CT scan |
+| 2 | ✅ Done | Blood chemistry + hematology + lipids + hepatic + renal |
+| 2b | ✅ Done | Hormones + vitamins + serology + toxicology + urinalysis |
+| 3 | 🔜 Next | Full endocrine panel (cortisol, testosterone, insulin) |
+| 4 | 📋 Planned | Brain connectome (DTI + fMRI) |
+| 5 | 📋 Planned | Microbiome + inflammatory cytokines |
+| 6 | 📋 Planned | Genome + epigenetics |
+| 7 | 📋 Planned | Peripheral nervous system + sensory mapping |
+| 8 | 🌅 Horizon | Complete integrated biological model |
+
+---
+
+## Want to Add Your Own Data?
+
+1. Fork this repository
+2. Copy the data structure from `src/cognitive_signature_platform.py`
+3. Replace the values with your own lab results
+4. Run the analysis
+5. Submit a pull request if you want to contribute to the project
+
+**Privacy note:** This project deals with medical data. Only share what you're comfortable making public. The case study subject chose to share his data openly for research purposes.
+
+---
+
+## Understanding the Metrics
+
+### Z-Score
+A Z-score tells you how far a value is from the population average:
+- **-1 to +1**: Normal range (68% of people fall here)
+- **-2 to +2**: Slight deviation (95% of people)
+- **Beyond ±2**: Significantly different from most people
+
+### Percentile
+If your percentile is 85%, it means 85% of the population has a lower value than you.
+
+---
+
+## Technical Stack
+
+- **Python 3.8+** (no external dependencies for core analysis)
+- **HTML/CSS/JS** (interactive dashboard — no build tools needed)
+- Standard library only: `json`, `hashlib`, `math`, `dataclasses`
+- Optional: `pydicom`, `nibabel`, `numpy` for brain scan processing
 
 ---
 
 ## Contributing
 
-This is open source. Build something brutal with it.
+This is an open research project. Contributions welcome in any form:
 
-1. Fork the repo
-2. Create a feature branch
-3. Submit a PR
-
-**Priority areas:**
-- Brian2/NEST backends for large-scale simulation
-- New environment types (language, vision, motor control)
-- Visualization tools
-- Benchmarking against biological data
+- Add new biological data layers
+- Improve the analysis algorithms
+- Create better visualizations
+- Add your own data as a case study
+- Translate documentation
+- Write about the philosophy
 
 ---
 
 ## References
 
-- Izhikevich, E. M. (2003). Simple model of spiking neurons. IEEE Transactions on Neural Networks.
-- Bi, G. Q., & Poo, M. M. (1998). Synaptic modifications in cultured hippocampal neurons. Journal of Neuroscience.
-- Tononi, G. (2004). An information integration theory of consciousness. BMC Neuroscience.
-- Zilles, K., et al. (1988). The human pattern of gyrification in the cerebral cortex. Anatomy and Embryology.
+- Allen, J.S., et al. (2002). *Normal neuroanatomical variation in the human brain*
+- Sporns, O. (2011). *The human connectome: a complex network*
+- Cryan, J.F. & Dinan, T.G. (2012). *Mind-altering microorganisms: the impact of the gut microbiota on brain and behaviour*
+- Slavich, G.M. & Irwin, M.R. (2014). *From stress to inflammation and major depressive disorder*
+- Sled, J.G., et al. (2010). *Regional variations in gray matter morphometry*
 
 ---
 
 ## License
 
-MIT License — Use it, modify it, build on it.
-
----
+MIT License — See [LICENSE](LICENSE) for details.
 
 ## Author
 
-**Daniel Gamo** ([@gamogestionweb](https://github.com/gamogestionweb))
+**Daniel Aparicio Gamo** ([@gamogestionweb](https://github.com/gamogestionweb))
 
 ---
 
-<div align="center">
-
-### Your brain's structure is the seed. The architecture does the rest.
-
-**⭐ Star this repo if you want to see where this goes.**
-
-</div>
+<p align="center">
+  <em>"Every body is a universe. This tool helps you map yours."</em>
+</p>

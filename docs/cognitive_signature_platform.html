@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cognitive Signature Platform — Mapping Human Identity</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #050508;
+  --deep: #0a0a10;
+  --surface: #111118;
+  --elevated: #18181f;
+  --border: #222230;
+  --text: #dddde4;
+  --muted: #666680;
+  --dim: #44445a;
+  --accent: #7c6aef;
+  --accent-glow: rgba(124,106,239,0.3);
+  --bio: #2dd4a8;
+  --bio-glow: rgba(45,212,168,0.25);
+  --blood: #ef5050;
+  --blood-glow: rgba(239,80,80,0.2);
+  --neural: #60a5fa;
+  --neural-glow: rgba(96,165,250,0.25);
+  --warn: #f59e0b;
+  --white: #f0f0f5;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'DM Mono',monospace;
+  background:var(--void);
+  color:var(--text);
+  line-height:1.65;
+  overflow-x:hidden;
+}
+
+/* ===== CANVAS BACKGROUND ===== */
+#bg-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;opacity:0.4;
+}
+
+/* ===== LAYOUT ===== */
+.app{position:relative;z-index:1;}
+section{padding:80px 24px;max-width:1280px;margin:0 auto;}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;text-align:center;
+  position:relative;
+}
+.hero::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:200px;
+  background:linear-gradient(transparent,var(--void));
+}
+.hero-badge{
+  display:inline-block;padding:6px 16px;border-radius:100px;
+  border:1px solid var(--accent);color:var(--accent);
+  font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;
+  margin-bottom:32px;
+  animation:fadeDown 1s ease forwards;opacity:0;
+}
+.hero h1{
+  font-family:'Syne',sans-serif;font-size:clamp(2.8rem,7vw,6rem);
+  font-weight:800;line-height:1.05;letter-spacing:-2px;
+  background:linear-gradient(135deg,var(--white) 0%,var(--accent) 50%,var(--bio) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:fadeDown 1s 0.2s ease forwards;opacity:0;
+  max-width:900px;
+}
+.hero-sub{
+  font-family:'Instrument Serif',serif;font-style:italic;
+  font-size:clamp(1rem,2.5vw,1.4rem);color:var(--muted);
+  margin-top:24px;max-width:600px;
+  animation:fadeDown 1s 0.4s ease forwards;opacity:0;
+}
+.hero-sig{
+  margin-top:48px;padding:16px 32px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;font-size:0.9rem;
+  animation:fadeDown 1s 0.6s ease forwards;opacity:0;
+}
+.hero-sig .id{color:var(--bio);font-weight:500;font-size:1.1rem;letter-spacing:2px;}
+.hero-sig .name{color:var(--muted);font-size:0.75rem;margin-top:4px;}
+
+.scroll-hint{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  animation:fadeDown 1s 1s ease forwards,bounce 2s 2s ease infinite;opacity:0;
+  color:var(--dim);font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;
+  z-index:2;
+}
+
+/* ===== SECTION HEADERS ===== */
+.section-header{margin-bottom:48px;}
+.section-header .num{
+  font-family:'Syne',sans-serif;font-size:0.7rem;
+  color:var(--accent);letter-spacing:4px;text-transform:uppercase;
+  margin-bottom:8px;
+}
+.section-header h2{
+  font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);
+  font-weight:700;color:var(--white);letter-spacing:-1px;
+}
+.section-header p{
+  color:var(--muted);font-size:0.85rem;max-width:600px;margin-top:12px;
+  font-family:'Instrument Serif',serif;font-style:italic;
+}
+
+/* ===== GRID SYSTEM ===== */
+.grid-2{display:grid;grid-template-columns:repeat(auto-fit,minmax(400px,1fr));gap:24px;}
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;}
+.grid-4{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;}
+
+/* ===== CARDS ===== */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:28px;position:relative;overflow:hidden;
+  transition:border-color 0.3s,transform 0.3s;
+}
+.card:hover{border-color:var(--accent);transform:translateY(-2px);}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:0;transition:opacity 0.3s;
+}
+.card:hover::before{opacity:1;}
+.card h3{
+  font-family:'Syne',sans-serif;font-size:0.8rem;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;
+  color:var(--accent);
+}
+.card.brain h3{color:var(--neural);}
+.card.blood h3{color:var(--blood);}
+.card.bio h3{color:var(--bio);}
+.card.full{grid-column:1/-1;}
+
+/* ===== METRICS ===== */
+.metric-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.03);
+  font-size:0.8rem;
+}
+.metric-row:last-child{border:none;}
+.metric-row .label{color:var(--muted);}
+.metric-row .val{font-weight:500;}
+.val.ok{color:var(--bio);}
+.val.hi{color:var(--blood);}
+.val.lo{color:var(--warn);}
+.val.special{color:var(--accent);}
+
+/* ===== GAUGE ===== */
+.gauge{
+  width:100%;height:10px;background:var(--elevated);
+  border-radius:5px;overflow:hidden;margin:4px 0 12px;
+  position:relative;
+}
+.gauge-fill{
+  height:100%;border-radius:5px;
+  transition:width 1.5s cubic-bezier(0.16,1,0.3,1);
+}
+.gauge-marker{
+  position:absolute;top:-4px;width:3px;height:18px;
+  background:var(--white);border-radius:2px;
+  transition:left 1.5s cubic-bezier(0.16,1,0.3,1);
+  box-shadow:0 0 8px rgba(255,255,255,0.5);
+}
+
+/* ===== INDEX BLOCKS ===== */
+.idx{
+  padding:16px;border-radius:12px;
+  background:linear-gradient(135deg,rgba(124,106,239,0.06),rgba(45,212,168,0.04));
+  border:1px solid rgba(124,106,239,0.12);
+  margin-bottom:12px;
+}
+.idx .idx-label{font-size:0.7rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.idx .idx-val{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:700;margin:4px 0;}
+.idx .idx-note{font-size:0.7rem;color:var(--dim);line-height:1.5;}
+
+/* ===== EVOLUTION BARS ===== */
+.evo-item{
+  display:grid;grid-template-columns:140px 1fr 80px;
+  align-items:center;gap:12px;padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,0.02);
+  font-size:0.78rem;
+}
+.evo-item .evo-label{color:var(--muted);}
+.evo-bar{height:6px;background:var(--elevated);border-radius:3px;overflow:hidden;position:relative;}
+.evo-bar-inner{height:100%;border-radius:3px;transition:width 1.5s ease;}
+.evo-bar-inner.up{background:linear-gradient(90deg,var(--bio),#2dd4a8aa);}
+.evo-bar-inner.down{background:linear-gradient(90deg,var(--blood),#ef5050aa);}
+.evo-pct{text-align:right;font-weight:500;}
+.evo-pct.up{color:var(--bio);}
+.evo-pct.down{color:var(--blood);}
+
+/* ===== BRAIN 3D-ISH VIS ===== */
+.brain-vis{
+  position:relative;width:100%;aspect-ratio:1;
+  max-width:360px;margin:0 auto;
+}
+.brain-vis canvas{width:100%;height:100%;}
+.brain-region-bars{margin-top:16px;}
+.br-row{display:flex;align-items:center;gap:10px;margin:8px 0;}
+.br-label{width:70px;font-size:0.7rem;color:var(--muted);text-align:right;}
+.br-track{flex:1;height:16px;background:var(--elevated);border-radius:4px;overflow:hidden;}
+.br-fill{
+  height:100%;border-radius:4px;
+  background:linear-gradient(90deg,var(--neural),var(--accent));
+  transition:width 2s cubic-bezier(0.16,1,0.3,1);
+}
+.br-pct{width:50px;font-size:0.8rem;color:var(--neural);}
+
+/* ===== SEROLOGY GRID ===== */
+.sero-item{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 12px;background:var(--elevated);border-radius:8px;
+  font-size:0.75rem;margin-bottom:6px;
+}
+.sero-dot{
+  width:8px;height:8px;border-radius:50%;flex-shrink:0;
+}
+.sero-dot.neg{background:var(--bio);box-shadow:0 0 6px var(--bio-glow);}
+.sero-dot.pos{background:var(--warn);box-shadow:0 0 6px rgba(245,158,11,0.3);}
+
+/* ===== COMPLETENESS RING ===== */
+.ring-container{
+  display:flex;flex-direction:column;align-items:center;
+  gap:24px;padding:20px 0;
+}
+.ring-svg{width:200px;height:200px;}
+.ring-label{
+  font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;
+  fill:var(--accent);
+}
+.ring-sub{font-size:0.65rem;fill:var(--muted);}
+.tag-cloud{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;
+  max-width:500px;
+}
+.tag{
+  padding:5px 14px;border-radius:100px;font-size:0.7rem;
+  border:1px solid;transition:all 0.3s;
+}
+.tag.on{border-color:var(--bio);color:var(--bio);background:rgba(45,212,168,0.06);}
+.tag.off{border-color:var(--dim);color:var(--dim);opacity:0.5;}
+
+/* ===== PHILOSOPHY SECTION ===== */
+.philosophy-section{
+  text-align:center;padding:120px 24px;
+  position:relative;
+}
+.philosophy-section::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:1px;height:60px;background:linear-gradient(var(--accent),transparent);
+}
+.philosophy-quote{
+  font-family:'Instrument Serif',serif;font-style:italic;
+  font-size:clamp(1.2rem,3vw,2rem);color:var(--white);
+  max-width:700px;margin:0 auto 32px;line-height:1.5;
+}
+.philosophy-quote span{
+  background:linear-gradient(135deg,var(--accent),var(--bio));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.philosophy-author{color:var(--muted);font-size:0.8rem;}
+
+/* ===== ROADMAP ===== */
+.roadmap{position:relative;padding-left:40px;}
+.roadmap::before{
+  content:'';position:absolute;left:12px;top:0;bottom:0;
+  width:1px;background:linear-gradient(var(--accent),var(--bio),transparent);
+}
+.roadmap-item{
+  position:relative;margin-bottom:32px;
+  padding:20px;background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;
+}
+.roadmap-item::before{
+  content:'';position:absolute;left:-33px;top:24px;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--accent);border:2px solid var(--void);
+  box-shadow:0 0 12px var(--accent-glow);
+}
+.roadmap-item.done::before{background:var(--bio);}
+.roadmap-item h4{
+  font-family:'Syne',sans-serif;font-size:0.85rem;
+  font-weight:600;margin-bottom:6px;color:var(--white);
+}
+.roadmap-item p{font-size:0.75rem;color:var(--muted);line-height:1.6;}
+.roadmap-item .phase{
+  font-size:0.6rem;color:var(--accent);letter-spacing:2px;
+  text-transform:uppercase;margin-bottom:4px;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+  text-align:center;padding:60px 24px;
+  border-top:1px solid var(--border);
+  color:var(--dim);font-size:0.7rem;
+}
+.footer a{color:var(--accent);text-decoration:none;}
+.footer .sig-final{
+  font-family:'Syne',sans-serif;font-size:1.2rem;
+  color:var(--bio);margin-bottom:16px;letter-spacing:3px;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeDown{
+  from{opacity:0;transform:translateY(-20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes bounce{
+  0%,100%{transform:translateX(-50%) translateY(0);}
+  50%{transform:translateX(-50%) translateY(8px);}
+}
+@keyframes pulse{
+  0%,100%{opacity:0.4;}
+  50%{opacity:1;}
+}
+.reveal{opacity:0;transform:translateY(30px);transition:all 0.8s cubic-bezier(0.16,1,0.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;}
+  section{padding:40px 16px;}
+  .evo-item{grid-template-columns:100px 1fr 60px;}
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+
+<div class="app">
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-badge">Biological Identity Project v2.0</div>
+  <h1>Cognitive Signature</h1>
+  <p class="hero-sub">Mapping the complete biological identity of a human being. Brain, blood, hormones, immunity — every system that makes you, you.</p>
+  <div class="hero-sig">
+    <div class="id">BIO-282DA3370A4A</div>
+    <div class="name">APARICIO GAMO, DANIEL · Born 1992 · Madrid · Case Study #1</div>
+  </div>
+  <div class="scroll-hint">↓ explore the signature</div>
+</section>
+
+<!-- ============ PHILOSOPHY ============ -->
+<div class="philosophy-section">
+  <div class="philosophy-quote">
+    "The mind is not the brain. The mind is the <span>entire body</span> — every cell, every hormone, every signal. Deny the animal and you deny the human."
+  </div>
+  <div class="philosophy-author">— Daniel Aparicio Gamo, creator & first subject</div>
+</div>
+
+<!-- ============ BLOOD CHEMISTRY ============ -->
+<section>
+  <div class="section-header reveal">
+    <div class="num">01 — Blood Chemistry</div>
+    <h2>The River Inside</h2>
+    <p>Your blood is a real-time snapshot of your entire biological state. Every molecule tells a story about who you are right now.</p>
+  </div>
+
+  <div class="grid-2">
+    <!-- Hematology -->
+    <div class="card blood reveal">
+      <h3>🩸 Hematology — Oct 2025</h3>
+      <div class="metric-row"><span class="label">Red Blood Cells</span><span class="val ok">4.80 xmill/µl</span></div>
+      <div class="metric-row"><span class="label">Hemoglobin</span><span class="val ok">15.1 g/dl</span></div>
+      <div class="metric-row"><span class="label">Hematocrit</span><span class="val ok">46.2%</span></div>
+      <div class="metric-row"><span class="label">MCV</span><span class="val ok">96.2 fl</span></div>
+      <div class="metric-row"><span class="label">WBC Total</span><span class="val ok">7.7 x10³/µl</span></div>
+      <div class="metric-row"><span class="label">Neutrophils</span><span class="val ok">3.1 x10³</span></div>
+      <div class="metric-row"><span class="label">Neutrophils %</span><span class="val lo">39.6% ↓</span></div>
+      <div class="metric-row"><span class="label">Lymphocytes</span><span class="val ok">3.2 x10³</span></div>
+      <div class="metric-row"><span class="label">Lymphocytes %</span><span class="val ok">42.1%</span></div>
+      <div class="metric-row"><span class="label">Eosinophils</span><span class="val hi">0.7 x10³ ↑</span></div>
+      <div class="metric-row"><span class="label">Eosinophils %</span><span class="val hi">9.2% ↑</span></div>
+      <div class="metric-row"><span class="label">Platelets</span><span class="val ok">199 x10³/µl</span></div>
+    </div>
+
+    <!-- Biochemistry -->
+    <div class="card reveal">
+      <h3>⚗️ Biochemistry & Lipids</h3>
+      <div class="metric-row"><span class="label">Glucose</span><span class="val ok">71 mg/dl</span></div>
+      <div class="metric-row"><span class="label">Creatinine</span><span class="val ok">0.96 mg/dl</span></div>
+      <div class="metric-row"><span class="label">GFR (CKD-EPI)</span><span class="val ok">>90 ml/min</span></div>
+      <div class="metric-row"><span class="label">Total Cholesterol</span><span class="val hi">205 mg/dl ↑</span></div>
+      <div class="metric-row"><span class="label">HDL</span><span class="val ok">71 mg/dl</span></div>
+      <div class="metric-row"><span class="label">LDL</span><span class="val hi">121 mg/dl ↑</span></div>
+      <div class="metric-row"><span class="label">Triglycerides</span><span class="val ok">64 mg/dl</span></div>
+      <div class="metric-row"><span class="label">LDL/HDL Ratio</span><span class="val ok">1.69</span></div>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+        <div class="metric-row"><span class="label">ALT (GPT)</span><span class="val ok">23 U/l</span></div>
+        <div class="metric-row"><span class="label">AST (GOT)</span><span class="val ok">24 U/l</span></div>
+        <div class="metric-row"><span class="label">GGT</span><span class="val ok">38 U/l</span></div>
+        <div class="metric-row"><span class="label">Bilirubin</span><span class="val ok">0.4 mg/dl</span></div>
+      </div>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+        <div class="metric-row"><span class="label">Sodium</span><span class="val ok">142 mEq/l</span></div>
+        <div class="metric-row"><span class="label">Potassium</span><span class="val ok">4.08 mEq/l</span></div>
+        <div class="metric-row"><span class="label">Chloride</span><span class="val ok">100 mEq/l</span></div>
+      </div>
+    </div>
+
+    <!-- Hormones -->
+    <div class="card reveal">
+      <h3>🧬 Hormones & Vitamins</h3>
+      <div class="metric-row"><span class="label">TSH</span><span class="val ok">3.09 µlU/ml</span></div>
+      <div class="metric-row"><span class="label">Free T4</span><span class="val ok">1.64 ng/dl</span></div>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+        <span class="label" style="font-size:0.7rem;color:var(--dim);">Aug 2023 Panel:</span>
+        <div class="metric-row"><span class="label">Vitamin B12</span><span class="val ok">424 pg/ml</span></div>
+        <div class="metric-row"><span class="label">Folic Acid</span><span class="val lo">2.5 ng/ml ↓</span></div>
+        <div class="metric-row"><span class="label">Iron</span><span class="val ok">107 µg/dl</span></div>
+        <div class="metric-row"><span class="label">HbA1c</span><span class="val ok">5.4%</span></div>
+      </div>
+    </div>
+
+    <!-- Unique Markers -->
+    <div class="card bio reveal">
+      <h3>🔬 Distinctive Biological Markers</h3>
+      <p style="font-size:0.75rem;color:var(--muted);margin-bottom:16px;">
+        These markers deviate from population norms and form part of your unique biological identity.
+      </p>
+      <div class="idx">
+        <div class="idx-label">Eosinophilia</div>
+        <div class="idx-val" style="color:var(--blood);">0.7 x10³/µl (9.2%)</div>
+        <div class="idx-note">Elevated eosinophils suggest a distinctive immune/allergic phenotype. This is your most distinguishing blood marker, up 75% since 2023.</div>
+      </div>
+      <div class="idx">
+        <div class="idx-label">Lymphocyte Dominance</div>
+        <div class="idx-val" style="color:var(--accent);">Lymph 42.1% > Neut 39.6%</div>
+        <div class="idx-note">Inverted neutrophil-lymphocyte ratio. Only ~15-20% of adult males show this pattern. Indicates strong adaptive immunity.</div>
+      </div>
+      <div class="idx">
+        <div class="idx-label">Low Folic Acid (2023)</div>
+        <div class="idx-val" style="color:var(--warn);">2.5 ng/ml</div>
+        <div class="idx-note">Below normal range (3.9-26.8). Folic acid is critical for DNA methylation — directly affects gene expression and neural function.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BIOLOGICAL INDICES ============ -->
+<section>
+  <div class="section-header reveal">
+    <div class="num">02 — Biological Indices</div>
+    <h2>Derived Intelligence</h2>
+    <p>Raw numbers become meaningful when combined. These computed indices reveal systemic patterns invisible in individual values.</p>
+  </div>
+
+  <div class="grid-4 reveal">
+    <div class="card">
+      <h3>NLR</h3>
+      <div style="font-family:'Syne';font-size:2.2rem;font-weight:800;color:var(--bio);">0.97</div>
+      <div style="font-size:0.7rem;color:var(--muted);margin-top:8px;">Neutrophil-to-Lymphocyte<br>Inflammation Index</div>
+      <div class="gauge"><div class="gauge-fill" style="width:32%;background:var(--bio);"></div><div class="gauge-marker" style="left:32%;"></div></div>
+      <div style="font-size:0.65rem;color:var(--dim);">Low inflammation · Range: 1.0-3.0</div>
+    </div>
+    <div class="card">
+      <h3>PLR</h3>
+      <div style="font-family:'Syne';font-size:2.2rem;font-weight:800;color:var(--bio);">62.2</div>
+      <div style="font-size:0.7rem;color:var(--muted);margin-top:8px;">Platelet-to-Lymphocyte<br>Thromboinflammation</div>
+      <div class="gauge"><div class="gauge-fill" style="width:41%;background:var(--bio);"></div><div class="gauge-marker" style="left:41%;"></div></div>
+      <div style="font-size:0.65rem;color:var(--dim);">Normal · Range: 50-150</div>
+    </div>
+    <div class="card">
+      <h3>Atherogenic</h3>
+      <div style="font-family:'Syne';font-size:2.2rem;font-weight:800;color:var(--bio);">1.89</div>
+      <div style="font-size:0.7rem;color:var(--muted);margin-top:8px;">Cardiovascular<br>Risk Index</div>
+      <div class="gauge"><div class="gauge-fill" style="width:47%;background:var(--bio);"></div><div class="gauge-marker" style="left:47%;"></div></div>
+      <div style="font-size:0.65rem;color:var(--dim);">Low risk · Target: &lt;4.0</div>
+    </div>
+    <div class="card">
+      <h3>De Ritis</h3>
+      <div style="font-family:'Syne';font-size:2.2rem;font-weight:800;color:var(--bio);">1.04</div>
+      <div style="font-size:0.7rem;color:var(--muted);margin-top:8px;">AST/ALT Ratio<br>Liver Health</div>
+      <div class="gauge"><div class="gauge-fill" style="width:52%;background:var(--bio);"></div><div class="gauge-marker" style="left:52%;"></div></div>
+      <div style="font-size:0.65rem;color:var(--dim);">Optimal · Range: 0.8-1.2</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TEMPORAL EVOLUTION ============ -->
+<section>
+  <div class="section-header reveal">
+    <div class="num">03 — Temporal Evolution</div>
+    <h2>The Body Remembers</h2>
+    <p>Two years between blood panels reveal how the biological system evolves. The body is not static — it's a river.</p>
+  </div>
+
+  <div class="card full reveal">
+    <h3>📈 August 2023 → October 2025 (Age 31 → 33)</h3>
+    <div style="margin-top:12px;">
+      <div class="evo-item"><span class="evo-label">Eosinophils</span><div class="evo-bar"><div class="evo-bar-inner up" style="width:75%;"></div></div><span class="evo-pct up">+75.0%</span></div>
+      <div class="evo-item"><span class="evo-label">GGT</span><div class="evo-bar"><div class="evo-bar-inner up" style="width:58%;"></div></div><span class="evo-pct up">+58.3%</span></div>
+      <div class="evo-item"><span class="evo-label">Triglycerides</span><div class="evo-bar"><div class="evo-bar-inner down" style="width:38%;"></div></div><span class="evo-pct down">-37.9%</span></div>
+      <div class="evo-item"><span class="evo-label">AST (GOT)</span><div class="evo-bar"><div class="evo-bar-inner up" style="width:33%;"></div></div><span class="evo-pct up">+33.3%</span></div>
+      <div class="evo-item"><span class="evo-label">HDL Cholesterol</span><div class="evo-bar"><div class="evo-bar-inner up" style="width:29%;"></div></div><span class="evo-pct up">+29.1%</span></div>
+      <div class="evo-item"><span class="evo-label">White Blood Cells</span><div class="evo-bar"><div class="evo-bar-inner up" style="width:24%;"></div></div><span class="evo-pct up">+24.2%</span></div>
+      <div class="evo-item"><span class="evo-label">Lymphocytes</span><div class="evo-bar"><div class="evo-bar-inner up" style="width:23%;"></div></div><span class="evo-pct up">+23.1%</span></div>
+      <div class="evo-item"><span class="evo-label">Creatinine</span><div class="evo-bar"><div class="evo-bar-inner down" style="width:17%;"></div></div><span class="evo-pct down">-17.2%</span></div>
+      <div class="evo-item"><span class="evo-label">Hemoglobin</span><div class="evo-bar"><div class="evo-bar-inner up" style="width:8%;"></div></div><span class="evo-pct up">+7.9%</span></div>
+      <div class="evo-item"><span class="evo-label">Hematocrit</span><div class="evo-bar"><div class="evo-bar-inner up" style="width:9%;"></div></div><span class="evo-pct up">+9.2%</span></div>
+      <div class="evo-item"><span class="evo-label">Total Cholesterol</span><div class="evo-bar"><div class="evo-bar-inner up" style="width:5%;"></div></div><span class="evo-pct up">+5.1%</span></div>
+    </div>
+    <div style="margin-top:20px;padding:16px;background:var(--elevated);border-radius:8px;font-size:0.75rem;color:var(--muted);line-height:1.8;">
+      <strong style="color:var(--bio);">Interpretation:</strong> Significant metabolic improvement (triglycerides ↓38%, HDL ↑29%). 
+      Immune system shift toward eosinophilic profile (+75%). Kidney function improved (creatinine ↓17%). 
+      Overall oxygen capacity increased (Hb ↑8%). The body is changing — capturing it at multiple timepoints 
+      is essential for a true biological signature.
+    </div>
+  </div>
+</section>
+
+<!-- ============ BRAIN STRUCTURE ============ -->
+<section>
+  <div class="section-header reveal">
+    <div class="num">04 — Brain Architecture</div>
+    <h2>The Cortical Landscape</h2>
+    <p>Structural features of the brain from CT scan. The original cognitive signature — now integrated into the whole-body map.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card brain reveal">
+      <h3>🧠 Structural Metrics</h3>
+      <div class="metric-row"><span class="label">Brain Signature</span><span class="val special">BRAIN-5C13EB2BADEB</span></div>
+      <div class="metric-row"><span class="label">Total Volume</span><span class="val">5294.31 ml*</span></div>
+      <div class="metric-row"><span class="label">Gray Matter</span><span class="val">1717.47 ml</span></div>
+      <div class="metric-row"><span class="label">White Matter</span><span class="val">566.54 ml</span></div>
+      <div class="metric-row"><span class="label">CSF</span><span class="val">160.58 ml</span></div>
+      <div class="metric-row"><span class="label">Ventricles</span><span class="val">27.48 ml</span></div>
+      <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+        <div class="metric-row"><span class="label">Gray/White Ratio</span><span class="val" style="color:var(--neural);">3.03</span></div>
+        <div class="metric-row"><span class="label">Gyrification</span><span class="val" style="color:var(--neural);">5.33</span></div>
+        <div class="metric-row"><span class="label">Asymmetry</span><span class="val">3.3% Left-dominant</span></div>
+      </div>
+      <div style="font-size:0.65rem;color:var(--dim);margin-top:12px;">*Includes surrounding tissue. Ratios are more reliable than absolute volumes.</div>
+    </div>
+
+    <div class="card brain reveal">
+      <h3>🗺️ Regional Distribution</h3>
+      <div class="brain-region-bars">
+        <div class="br-row">
+          <span class="br-label">Frontal</span>
+          <div class="br-track"><div class="br-fill" style="width:0%;" data-target="85%"></div></div>
+          <span class="br-pct">32.1%</span>
+        </div>
+        <div class="br-row">
+          <span class="br-label">Parietal</span>
+          <div class="br-track"><div class="br-fill" style="width:0%;" data-target="66%"></div></div>
+          <span class="br-pct">24.8%</span>
+        </div>
+        <div class="br-row">
+          <span class="br-label">Temporal</span>
+          <div class="br-track"><div class="br-fill" style="width:0%;" data-target="57%"></div></div>
+          <span class="br-pct">21.5%</span>
+        </div>
+        <div class="br-row">
+          <span class="br-label">Occipital</span>
+          <div class="br-track"><div class="br-fill" style="width:0%;" data-target="38%"></div></div>
+          <span class="br-pct">14.2%</span>
+        </div>
+        <div class="br-row">
+          <span class="br-label">Central</span>
+          <div class="br-track"><div class="br-fill" style="width:0%;" data-target="20%"></div></div>
+          <span class="br-pct">7.4%</span>
+        </div>
+      </div>
+      <div style="margin-top:24px;padding:16px;background:var(--elevated);border-radius:8px;font-size:0.75rem;color:var(--muted);line-height:1.7;">
+        <strong style="color:var(--neural);">Frontal dominance (32.1%)</strong> — associated with executive function, planning, abstract reasoning, and personality expression. 
+        Left hemisphere dominant — typical for right-handed individuals with strong language lateralization.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SEROLOGY & TOXICOLOGY ============ -->
+<section>
+  <div class="section-header reveal">
+    <div class="num">05 — Immunological History & Toxicology</div>
+    <h2>What's Been Through The Body</h2>
+    <p>Serology reveals past encounters with pathogens. Toxicology screens the chemical landscape. Together they tell the body's history.</p>
+  </div>
+
+  <div class="grid-2">
+    <div class="card reveal">
+      <h3>🦠 Serology (Latest)</h3>
+      <div class="sero-item"><div class="sero-dot neg"></div>Hepatitis B — Negative</div>
+      <div class="sero-item"><div class="sero-dot neg"></div>Hepatitis C — Negative</div>
+      <div class="sero-item"><div class="sero-dot neg"></div>HIV 1+2 — Negative</div>
+      <div class="sero-item"><div class="sero-dot neg"></div>Syphilis — Negative</div>
+      <div class="sero-item"><div class="sero-dot pos"></div>EBV IgG (VCA) — <strong style="color:var(--warn)">POSITIVE</strong></div>
+      <div class="sero-item"><div class="sero-dot neg"></div>EBV IgM (VCA) — Negative</div>
+      <div class="sero-item" style="opacity:0.6;"><div class="sero-dot" style="background:var(--dim);"></div>EBV EBNA — Indeterminate</div>
+      <div style="margin-top:12px;font-size:0.7rem;color:var(--dim);padding:12px;background:var(--elevated);border-radius:8px;">
+        EBV IgG positive + IgM negative = past Epstein-Barr infection (mononucleosis). 
+        Present in ~95% of adults worldwide. Part of the immunological autobiography.
+      </div>
+    </div>
+
+    <div class="card reveal">
+      <h3>🧪 Toxicology Screen — Dec 2024</h3>
+      <div style="font-size:0.7rem;color:var(--dim);margin-bottom:12px;">
+        Hospital Gregorio Marañón · 10-panel immunoassay
+      </div>
+      <div class="sero-item"><div class="sero-dot neg"></div>Amphetamines — Negative</div>
+      <div class="sero-item"><div class="sero-dot neg"></div>Tricyclic Antidepressants — Negative</div>
+      <div class="sero-item"><div class="sero-dot neg"></div>Barbiturates — Negative</div>
+      <div class="sero-item"><div class="sero-dot neg"></div>Benzodiazepines — Negative</div>
+      <div class="sero-item"><div class="sero-dot neg"></div>Cannabinoids — Negative</div>
+      <div class="sero-item"><div class="sero-dot neg"></div>Cocaine — Negative</div>
+      <div class="sero-item"><div class="sero-dot neg"></div>Methadone — Negative</div>
+      <div class="sero-item"><div class="sero-dot neg"></div>Methamphetamine — Negative</div>
+      <div class="sero-item"><div class="sero-dot neg"></div>MDMA — Negative</div>
+      <div class="sero-item"><div class="sero-dot neg"></div>Morphine/Opiates — Negative</div>
+      <div style="margin-top:12px;text-align:center;font-size:0.75rem;color:var(--bio);">
+        All 10 panels: CLEAN
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPLETENESS ============ -->
+<section>
+  <div class="section-header reveal">
+    <div class="num">06 — Signature Completeness</div>
+    <h2>How Much of You Have We Captured?</h2>
+    <p>A complete biological signature would require mapping every system. We're at the beginning.</p>
+  </div>
+
+  <div class="card full reveal">
+    <div class="ring-container">
+      <svg class="ring-svg" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="85" fill="none" stroke="var(--elevated)" stroke-width="12"/>
+        <circle cx="100" cy="100" r="85" fill="none" stroke="url(#ringGrad)" stroke-width="12"
+                stroke-dasharray="534" stroke-dashoffset="437" stroke-linecap="round"
+                transform="rotate(-90 100 100)" style="transition:stroke-dashoffset 2s ease;">
+        </circle>
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:var(--accent)"/>
+            <stop offset="100%" style="stop-color:var(--bio)"/>
+          </linearGradient>
+        </defs>
+        <text class="ring-label" x="100" y="95" text-anchor="middle">~18%</text>
+        <text class="ring-sub" x="100" y="115" text-anchor="middle">captured</text>
+      </svg>
+
+      <div>
+        <div style="font-size:0.7rem;color:var(--bio);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;text-align:center;">Systems Present</div>
+        <div class="tag-cloud">
+          <span class="tag on">🧠 Brain Structure</span>
+          <span class="tag on">🩸 Blood Chemistry</span>
+          <span class="tag on">⚗️ Thyroid Hormones</span>
+          <span class="tag on">💧 Urinalysis</span>
+          <span class="tag on">🧪 Toxicology</span>
+          <span class="tag on">🦠 Serology</span>
+        </div>
+        <div style="font-size:0.7rem;color:var(--blood);letter-spacing:2px;text-transform:uppercase;margin:20px 0 8px;text-align:center;">Missing Systems</div>
+        <div class="tag-cloud">
+          <span class="tag off">🧬 Genome (WGS)</span>
+          <span class="tag off">🔬 Connectome (DTI/fMRI)</span>
+          <span class="tag off">🦠 Microbiome (16S)</span>
+          <span class="tag off">⚡ Peripheral Nervous System</span>
+          <span class="tag off">🧫 Epigenetics</span>
+          <span class="tag off">💉 Full Endocrine Panel</span>
+          <span class="tag off">🔥 Inflammatory Cytokines</span>
+          <span class="tag off">✋ Sensory Receptor Map</span>
+          <span class="tag off">🫀 Cardiac Rhythm (HRV)</span>
+          <span class="tag off">🧘 Autonomic NS Profile</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROADMAP ============ -->
+<section>
+  <div class="section-header reveal">
+    <div class="num">07 — Roadmap</div>
+    <h2>The Path to 100%</h2>
+    <p>From first blood test to complete biological replica. Every layer we add gets us closer to capturing what makes a human, human.</p>
+  </div>
+
+  <div class="roadmap reveal">
+    <div class="roadmap-item done">
+      <div class="phase">Phase 1 — Complete ✓</div>
+      <h4>Brain Structural Signature</h4>
+      <p>CT scan analysis, volumetric measurements, tissue segmentation, regional distribution. The original cognitive-signature project.</p>
+    </div>
+    <div class="roadmap-item done">
+      <div class="phase">Phase 2 — Complete ✓</div>
+      <h4>Full Blood Chemistry Integration</h4>
+      <p>Multi-timepoint blood panels, hematology, biochemistry, lipid profiles, hepatic & renal function, electrolytes, thyroid hormones, vitamins, computed biological indices, temporal evolution analysis.</p>
+    </div>
+    <div class="roadmap-item done">
+      <div class="phase">Phase 2b — Complete ✓</div>
+      <h4>Immunological & Toxicological History</h4>
+      <p>Serology panels (Hep B/C, HIV, syphilis, EBV), urinalysis, 10-panel toxicology screen. The body's encounter history with the outside world.</p>
+    </div>
+    <div class="roadmap-item">
+      <div class="phase">Phase 3 — Next</div>
+      <h4>Full Endocrine Panel</h4>
+      <p>Cortisol (circadian rhythm), testosterone, estradiol, insulin, IGF-1, DHEA-S, prolactin. Hormones drive behavior, emotion, and cognition at every level.</p>
+    </div>
+    <div class="roadmap-item">
+      <div class="phase">Phase 4</div>
+      <h4>Brain Connectome</h4>
+      <p>Diffusion Tensor Imaging (DTI) for white matter tract mapping. Resting-state fMRI for functional connectivity. This is the brain's "wiring diagram".</p>
+    </div>
+    <div class="roadmap-item">
+      <div class="phase">Phase 5</div>
+      <h4>Microbiome & Inflammatory Profile</h4>
+      <p>16S rRNA gut sequencing, CRP, IL-6, TNF-alpha. The gut-brain axis is real — your gut bacteria produce serotonin and GABA.</p>
+    </div>
+    <div class="roadmap-item">
+      <div class="phase">Phase 6</div>
+      <h4>Genetic & Epigenetic Profile</h4>
+      <p>Whole genome sequencing or SNP array + DNA methylation array. Your blueprint AND how life experience has modified it.</p>
+    </div>
+    <div class="roadmap-item">
+      <div class="phase">Phase 7</div>
+      <h4>Peripheral Nervous System & Sensory Map</h4>
+      <p>Nerve conduction studies, somatosensory evoked potentials, sensory threshold mapping. How you physically experience reality — every touch, every sensation.</p>
+    </div>
+    <div class="roadmap-item">
+      <div class="phase">Phase 8 — The Horizon</div>
+      <h4>Complete Biological Replica</h4>
+      <p>Integration of all systems into a single unified model. The complete map of a human being — brain, body, chemistry, genetics, experience. Not a robot. A pattern. The pattern of who you are.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CLOSING PHILOSOPHY ============ -->
+<div class="philosophy-section">
+  <div class="philosophy-quote">
+    "We're not building a robot. We're <span>mapping the pattern</span> of what it means to be alive. Every blood cell, every neuron, every hormone — they're all chapters in the same book."
+  </div>
+  <div class="philosophy-author" style="margin-top:24px;">
+    This is approximately 18% of a complete biological signature.<br>
+    But every map of the unknown starts with a first line.
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<div class="footer">
+  <div class="sig-final">BIO-282DA3370A4A</div>
+  Subject: APARICIO GAMO, DANIEL · First human case study<br>
+  Brain Signature: BRAIN-5C13EB2BADEB · Blood Panels: 2023 + 2025<br><br>
+  <a href="https://github.com/gamogestionweb/cognitive-signature">github.com/gamogestionweb/cognitive-signature</a><br><br>
+  <em>"Every body is a universe. This tool helps you map yours."</em><br><br>
+  MIT License · 2024-2026
+</div>
+
+</div>
+
+<script>
+// ===== PARTICLE BACKGROUND =====
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+const PARTICLE_COUNT = 80;
+
+function resize(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor(){
+    this.reset();
+  }
+  reset(){
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.vx = (Math.random()-0.5) * 0.3;
+    this.vy = (Math.random()-0.5) * 0.3;
+    this.r = Math.random() * 1.5 + 0.5;
+    this.alpha = Math.random() * 0.3 + 0.05;
+    const colors = ['124,106,239','45,212,168','96,165,250','239,80,80'];
+    this.color = colors[Math.floor(Math.random()*colors.length)];
+  }
+  update(){
+    this.x += this.vx;
+    this.y += this.vy;
+    if(this.x<0||this.x>canvas.width||this.y<0||this.y>canvas.height) this.reset();
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(${this.color},${this.alpha})`;
+    ctx.fill();
+  }
+}
+
+for(let i=0;i<PARTICLE_COUNT;i++) particles.push(new Particle());
+
+function drawLines(){
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx+dy*dy);
+      if(dist < 120){
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(124,106,239,${0.06*(1-dist/120)})`;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{p.update();p.draw();});
+  drawLines();
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ===== SCROLL REVEAL =====
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      // Animate brain bars when visible
+      e.target.querySelectorAll('.br-fill[data-target]').forEach(bar=>{
+        setTimeout(()=>{bar.style.width = bar.dataset.target;}, 300);
+      });
+    }
+  });
+},{threshold:0.1,rootMargin:'0px 0px -50px 0px'});
+reveals.forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
