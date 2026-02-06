@@ -48,10 +48,10 @@ The first subject is the creator of this project — **Daniel Aparicio Gamo** (b
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
-║  SIGNATURE ID: BIO-387E79F3997E                             ║
-║  BRAIN ID:     BRAIN-5C13EB2BADEB                           ║
-║  Subject:      APARICIO GAMO, DANIEL                        ║
-║  Age:          34  |  Sex: M  |  Location: Madrid, Spain    ║
+║  SIGNATURE ID: BIO-387E79F9997E                             ║
+║  BRAIN ID:     BRAIN-5C43EB2BADwB                           ║
+║  Subject:      GAMO, DANIEL                        ║
+║  Age:          34  |  Sex: M  |  Location: Spain    ║
 ║  Data:         Aug 2023 → Oct 2025 (2+ years tracked)       ║
 ║  Completeness: 50% (8 of 16 biological systems mapped)      ║
 ╚══════════════════════════════════════════════════════════════╝
