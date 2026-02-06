@@ -261,7 +261,7 @@ MIT License — See [LICENSE](LICENSE) for details.
 
 ## Author
 
-**Daniel Aparicio Gamo** ([@gamogestionweb](https://github.com/gamogestionweb))
+**Daniel Gamo** ([@gamogestionweb](https://github.com/gamogestionweb))
 
 ---
 
